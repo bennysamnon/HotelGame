@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>מלון החלומות</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3eee2;--ink:#12263a;--card:#fffdf8;--acc:#16a1ab;--gold:#b8872a;--mute:#66758a;--line:#e2d9c4;--head:#12263a;--headink:#f6efe0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1b29;--ink:#f1ece0;--card:#172a3d;--mute:#9bb0c2;--line:#27425c;--head:#0a1420;--acc:#2cc3cd;--gold:#e0b04f}}
+:root[data-theme="dark"]{--bg:#0e1b29;--ink:#f1ece0;--card:#172a3d;--mute:#9bb0c2;--line:#27425c;--head:#0a1420;--acc:#2cc3cd;--gold:#e0b04f}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Heebo,system-ui,sans-serif;display:flex;flex-direction:column;overflow:hidden}
+header{background:var(--head);color:var(--headink);padding:10px 14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center}
+header b{display:block;font-size:20px;font-weight:900}
+header small{opacity:.7;font-size:12px}
+main{flex:1;overflow-y:auto;padding:12px 12px 16px}
+h2{margin:4px 2px 10px;font-size:20px;font-weight:900}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;display:flex;gap:12px;align-items:center}
+.card .em{font-size:30px;width:44px;text-align:center}
+.card .tx{flex:1;min-width:0}
+.card .tx b{font-size:16px}
+.card .tx p{margin:2px 0 0;font-size:13px;color:var(--mute)}
+button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 12px;background:var(--acc);color:#fff;min-width:84px;cursor:pointer}
+button:disabled{background:var(--line);color:var(--mute);cursor:default}
+button.gold{background:var(--gold)}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+nav{display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border-top:1px solid var(--line)}
+nav button{background:none;color:var(--mute);border-radius:0;padding:10px 2px;font-size:12px;min-width:0}
+nav button span{display:block;font-size:22px}
+nav button.on{color:var(--acc);box-shadow:inset 0 3px 0 var(--acc)}
+.bell{width:100%;font-size:18px;padding:16px;margin-bottom:12px;background:var(--gold)}
+.feed{background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:10px 12px;margin:4px 0 12px;font-size:14px;min-height:96px}
+.feed div{padding:3px 0;color:var(--mute)}.feed div:first-child{color:var(--ink);font-weight:700}
+.pool{height:56px;border-radius:14px;margin-bottom:12px;background:repeating-linear-gradient(100deg,#2cc3cd 0 18px,#5fd8de 18px 36px);display:flex;align-items:center;justify-content:center;font-size:26px;letter-spacing:6px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.room{aspect-ratio:1;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:24px;padding:0;min-width:0;color:var(--ink);position:relative}
+.room.occ{background:var(--acc);border-color:var(--acc)}
+.room.occ::after{content:"🔑";position:absolute;font-size:11px;top:2px;left:3px}
+.stars{color:var(--gold);letter-spacing:2px}
+#modal{position:fixed;inset:0;background:#000a;display:none;align-items:flex-end;justify-content:center;z-index:5}
+#modal.on{display:flex}
+#sheet{background:var(--card);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px));text-align:center}
+#sheet .big{font-size:64px}
+#sheet p{color:var(--mute);margin:6px 0 14px}
+#sheet button{width:100%;margin-top:8px}
+.map{direction:ltr;display:grid;grid-template-columns:1fr 1.3fr 1fr;grid-template-areas:"pool tower attr" "pool lobby attr";gap:8px;padding:10px;border-radius:18px;background:linear-gradient(#bfe6f0,#e9e3d0 55%,#9fcf8c 55%,#8cc47a)}
+.zone{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:14px;padding:8px 4px;min-width:0;color:#12263a;font-size:24px;border:2px solid #fff9;line-height:1.3;word-break:break-all;text-align:center}
+.zone small{font-size:12px;font-weight:900}
+.zp{grid-area:pool;background:linear-gradient(#7fe0e6,#2cc3cd);min-height:260px}
+.za{grid-area:attr;background:linear-gradient(#f6d58a,#e8b95a)}
+.zt{grid-area:tower;background:#d7e0ea;gap:3px;padding:6px}
+.zl{grid-area:lobby;background:#f2e3c4;min-height:84px}
+.fl{display:flex;gap:4px}
+.w{width:18px;height:12px;border-radius:2px;background:#8ea3b8;display:block}
+.w.lit{background:#ffd75e}.w.no{background:transparent}
+.hint{text-align:center;color:var(--mute);font-size:14px;margin:12px 0}
+.fab{position:fixed;right:10px;top:50%;transform:translateY(-50%);z-index:3;display:flex;flex-direction:column-reverse;gap:8px;align-items:center}
+.fab button{min-width:0;width:50px;height:50px;border-radius:50%;padding:0;font-size:22px;box-shadow:0 3px 10px #0005}
+.fab .fm{display:none;flex-direction:column;gap:8px}.fab .fm.on{display:flex}
+.fab .fm button{background:var(--card);color:var(--ink)}
+#panel{position:fixed;left:0;right:0;bottom:0;height:82%;background:var(--bg);border-radius:20px 20px 0 0;box-shadow:0 -8px 30px #0006;transform:translateY(105%);transition:transform .25s;z-index:4;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom,0px)}
+#panel.on{transform:none}
+@media(prefers-reduced-motion:reduce){#panel{transition:none}}
+#pc{overflow-y:auto;padding:4px 12px 16px;flex:1}
+.ph{padding:10px 12px 0}.ph button{min-width:0;width:38px;height:38px;border-radius:50%;padding:0;background:var(--line);color:var(--ink)}
+#wrap{position:relative}
+#guest{position:absolute;left:50%;top:92%;transform:translate(-50%,-100%);transition:left 2.5s ease-in-out,top 2.5s ease-in-out;z-index:2;background:none;border:0;padding:0;min-width:0;display:flex;flex-direction:column;align-items:center;color:#12263a}
+#bub{background:#fff;border-radius:12px;padding:6px 9px;font-size:12px;font-weight:700;max-width:130px;width:max-content;box-shadow:0 2px 8px #0004;margin-bottom:2px;line-height:1.35}
+#gc{font-size:38px;filter:drop-shadow(0 2px 2px #0005)}
+@media(prefers-reduced-motion:reduce){#guest{transition:none}}
+</style>
+<script>window.__err=function(t){if((window.__n=(window.__n||0)+1)>4)return;var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99;background:#b00;color:#fff;font:12px monospace;padding:8px;direction:ltr;text-align:left;white-space:pre-wrap';d.textContent=t+'  (tap to close)';d.onclick=function(){d.remove()};(document.body||document.documentElement).appendChild(d)};window.onerror=function(m,s,l,c){window.__err('ERROR: '+m+' ('+l+':'+c+')');return false};window.addEventListener('unhandledrejection',function(e){window.__err('PROMISE: '+e.reason)});setTimeout(function(){if(!window.__ok)window.__err('Game did not finish starting (v3). Send Claude a screenshot of this.')},4000);</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>window.THREE||document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"><\/script>')</script>
+</head>
+<body>
+<header>
+<div><b id="m">0</b><small>💰 כסף</small></div>
+<div><b id="i">0</b><small>לאורח הבא</small></div>
+<div><b id="o">0/0</b><small>חדרים תפוסים</small></div>
+<div id="hs" style="grid-column:1/-1;font-size:14px"></div></header>
+<main id="main"><div id="wrap"><div id="mapbox"></div><button id="guest" data-guest aria-label="האורח"><span id="bub">שלום! נכנסתי למלון 🧳</span><span id="gc">🧐</span></button></div><p class="hint" id="hint"></p></main>
+<div style="position:fixed;left:6px;bottom:2px;font:9px monospace;opacity:.4;color:#fff;z-index:5;pointer-events:none">v3</div>
+<div class="fab" id="fab"></div>
+<div id="panel"><div class="ph"><button data-x aria-label="סגירה">✕</button></div><div id="pc"></div></div>
+<div id="modal"><div id="sheet"></div></div>
+<script>
+const F=[
+{id:'rec',t:0,n:'דלפק קבלה',e:'🛎️',c:40,g:1.6,sp:1,d:'עובדים נוספים = צ׳ק־אין מהיר יותר'},
+{id:'elev',t:0,n:'מעליות לכל הקומות',e:'🛗',c:120,g:1.7,ap:1,pg:.1,d:'אורחים מגיעים לחדרים מהר ויותר מרוצים'},
+{id:'pool',t:1,n:'בריכה ענקית',e:'🏊',c:150,g:1.6,ap:2,pg:.2,d:'מושכת משפחות שלמות'},
+{id:'slide',t:1,n:'מגלשות',e:'🛝',c:300,g:1.6,ap:2,d:'הילדים לא רוצים ללכת הביתה'},
+{id:'sun',t:1,n:'מיטות שיזוף',e:'🏖️',c:200,g:1.6,pg:.4,d:'אורחים נשארים ומוציאים יותר'},
+{id:'bar',t:1,n:'בר בריכה',e:'🍹',c:350,g:1.6,pg:.8,d:'קוקטיילים ליד המים'},
+{id:'guard',t:1,n:'מצילים ועובדי בריכה',e:'🦺',c:250,g:1.6,ap:1,pg:.1,d:'בטיחות וניקיון מביאים עוד אורחים'},
+{id:'vip',t:1,n:'אזור VIP',e:'💎',c:1200,g:1.7,pg:2.5,d:'קבאנות פרטיות לאורחים הכי חשובים'},
+{id:'buf',t:3,n:'מסעדת בופה',e:'🍽️',c:400,g:1.6,pg:1,d:'כל אורח אוכל ארוחת בוקר'},
+{id:'spa',t:3,n:'חדר כושר וספא',e:'🧖',c:700,g:1.65,ap:1,pg:1.5,d:'עיסויים וסאונה'},
+{id:'hall',t:3,n:'אולם אירועים',e:'🎉',c:1500,g:1.7,pg:3,d:'חתונות, כנסים ובר מצוות'},
+{id:'shop',t:3,n:'חנות מתנות',e:'🎁',c:300,g:1.6,pg:.7,d:'מגנטים ומגבות עם לוגו'},
+{id:'rs',t:3,n:'שירות חדרים',e:'🍳',c:500,g:1.6,pg:1.2,d:'ארוחה עד הדלת'}];
+const R=[
+{id:'reg',n:'חדר רגיל',e:'🛏️',c:100,r:1,cap:2,d:'מיטה זוגית, מקלחת וחלון לגינה.'},
+{id:'fam',n:'חדר משפחתי',e:'👨‍👩‍👧',c:350,r:3,cap:4,d:'שתי מיטות, ספה נפתחת ופינת משחקים.'},
+{id:'lux',n:'סוויטה יוקרתית',e:'👑',c:1000,r:8,cap:2,d:'ג׳קוזי, מרפסת ונוף לים.'},
+{id:'jr',n:'ג׳וניור סוויטה',e:'🛋️',c:1800,r:500,cap:3,s:2,d:'סלון קטן, מיטה גדולה ופינת קפה.'},
+{id:'pent',n:'פנטהאוז',e:'🏙️',c:4000,r:900,cap:2,s:3,d:'קומה עליונה עם בריכה פרטית ונוף לעיר.'},
+{id:'roy',n:'סוויטה מלכותית',e:'🏰',c:12000,r:2000,cap:4,s:4,d:'שירות אישי, בר פרטי ושתי מרפסות.'}];
+const SC=[0,2000,8000,25000,80000],CAP=[8,16,28,42,60],MAXL=5;
+const B={rec:[50,2,10],elev:[150,1.9,10],pool:[200,1.9,15],slide:[400,1.9,15],sun:[250,1.9,8],bar:[450,1.9,20],guard:[300,1.9,8],vip:[1500,1.9,40],buf:[500,1.9,20],spa:[900,1.9,30],hall:[2000,1.9,50],shop:[400,1.9,12],rs:[700,1.9,18]};
+F.forEach(f=>{const b=B[f.id];f.c=b[0];f.g=b[1];f.pg=b[2];f.sp=0});
+R[0].r=50;R[1].r=120;R[2].r=300;
+const TABS=[['🛎️','לובי'],['🏊','בריכות'],['🛏️','חדרים'],['🍽️','אטרקציות']];
+let S={m:100,s:1,f:{},r:{reg:1,fam:0,lux:0,jr:0,pent:0,roy:0},stays:[],occ:0},tab=-1,menu=false,feed=['ברוכים הבאים למלון! 🌴'],tipAt={};
+try{const x=JSON.parse(localStorage.getItem('hotel2'));if(x&&x.r)S=x}catch(e){}
+R.forEach(r=>{S.r[r.id]=S.r[r.id]||0});
+const $=id=>document.getElementById(id);
+const fmt=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e4?(n/1e3).toFixed(1)+'K':Math.floor(n).toLocaleString('he');
+const lv=id=>S.f[id]||0,fc=f=>Math.round(f.c*Math.pow(f.g,lv(f.id)));
+const mult=()=>1+.25*(S.s-1),total=()=>R.reduce((a,r)=>a+S.r[r.id],0);
+const rc=r=>Math.round(r.c*Math.pow(1.12,S.r[r.id]));
+function calc(){let sp=1,ap=0,pg=0;F.forEach(f=>{const l=lv(f.id);sp+=(f.sp||0)*l;ap+=(f.ap||0)*l;pg+=(f.pg||0)*l});
+const rooms=[];R.slice().reverse().forEach(r=>{for(let i=0;i<S.r[r.id];i++)rooms.push(r)});
+return{sp,ap,pg,rooms,target:Math.min(rooms.length,2+ap+S.s*2)}}
+function income(c){let ri=0,g=0;c.rooms.forEach((r,i)=>{const f=Math.max(0,Math.min(1,S.occ-i));ri+=r.r*f;g+=r.cap*f});return ri*mult()+g*c.pg*.5}
+function say(t){feed.unshift(t);feed=feed.slice(0,5)}
+function tick(){const c=calc(),old=Math.floor(S.occ);
+if(S.occ<c.target)S.occ=Math.min(c.target,S.occ+c.sp*.4);else S.occ=Math.max(c.target,S.occ-.3);
+const n=Math.floor(S.occ);if(n>old)say('אורח קיבל מפתח לחדר '+(100+n)+' 🔑');if(n<old)say('אורח עזב ושילם בקבלה 💳');
+S.m+=income(c);if(++gt%9==0){gz=(gz+1)%4;guestSet(gz)}draw()}
+function head(){const c=calc();$('hs').innerHTML='<span class="stars" style="color:#f0c24d;font-size:18px">'+'★'.repeat(S.s)+'☆'.repeat(5-S.s)+'</span> דירוג המלון: '+S.s+' כוכבים &nbsp; ⏱️ '+mm(S.t)+' · אורח נוסף בעוד '+mm(120-(S.t||0)%120);$('m').textContent=fmt(S.m);$('i').textContent=fmt(income(c));$('o').textContent=Math.floor(S.occ)+'/'+total()}
+function fcard(f){const l=lv(f.id),c=fc(f),mx=l>=MAXL;
+return `<div class="card"><div class="em">${f.e}</div><div class="tx"><b>${f.n}</b> <small class="stars">${'★'.repeat(l)+'☆'.repeat(MAXL-l)}</small><p>${f.d}<br>+₪${f.pg} לכל אורח, בכל כוכב</p></div><button data-f="${f.id}" ${mx||S.m<c?'disabled':''}>${mx?'מקסימום':(l?'שדרג':'קנה')+' ₪'+fmt(c)}</button></div>`}
+function mapHTML(){const c=calc(),n=c.rooms.length,fl=Math.max(1,Math.ceil(n/4)),o=Math.floor(S.occ);
+let t='';for(let f=fl-1;f>=0;f--){t+='<div class="fl">';for(let k=0;k<4;k++){const i=f*4+k;t+=`<i class="w ${i>=n?'no':i<o?'lit':''}"></i>`}t+='</div>'}
+const ic=a=>a.filter(([id])=>lv(id)).map(x=>x[1]).join('')||'🚧';
+const pool=ic([['pool','🏊'],['slide','🛝'],['sun','🏖️'],['bar','🍹'],['guard','🦺'],['vip','💎']]);
+const att=ic([['buf','🍽️'],['spa','🧖'],['hall','🎉'],['shop','🎁'],['rs','🍳']]);
+return `<div class="map"><button class="zone zp" data-t="1">${pool}<small>בריכות</small></button><button class="zone zt" data-t="2"><span class="stars">${'★'.repeat(S.s)}</span>${t}<small>חדרים ${o}/${n}</small></button><button class="zone zl" data-t="0"><span>${lv('elev')?'🛗 ':''}🚪${'🚶'.repeat(Math.min(4,Math.ceil(o/2)))}</span><small>לובי</small></button><button class="zone za" data-t="3">${att}<small>אטרקציות</small></button></div>`}
+function draw(){head();
+if(window.R3)upd3d();else $('mapbox').innerHTML=mapHTML();$('hint').textContent=feed[0];
+$('fab').innerHTML=`<button data-menu aria-label="תפריט">${menu?'✕':'🗺️'}</button><div class="fm ${menu?'on':''}">${TABS.map((t,i)=>`<button data-t="${i}" aria-label="${t[1]}">${t[0]}</button>`).join('')}<button data-admin aria-label="אדמין">⚙️</button></div>`;
+let h='';
+if(tab==0){h=`<h2>לובי וקבלה</h2><button class="bell" data-bell>🛎️ משוך אורח</button><div class="feed">${feed.map(x=>`<div>${x}</div>`).join('')}</div>`+F.filter(f=>f.t==0).map(fcard).join('')}
+if(tab==1){h=`<h2>מתחם בריכות</h2><div class="pool">${lv('pool')?'🏊 🛝 🍹 🏊':'🌊 🌊 🌊 🌊'}</div>`+F.filter(f=>f.t==1).map(fcard).join('')}
+if(tab==2){const c=calc();h=`<h2>חדרים וסוויטות</h2><div class="card"><div class="em">⭐</div><div class="tx"><b>דירוג המלון</b> <span class="stars">${'★'.repeat(S.s)+'☆'.repeat(5-S.s)}</span><p>עד ${CAP[S.s-1]} חדרים · הכנסה ×${mult().toFixed(1)}</p></div><button class="gold" data-star ${S.s>=5||S.m<SC[S.s]?'disabled':''}>${S.s>=5?'5 כוכבים!':'שדרג ₪'+fmt(SC[S.s])}</button></div><div class="grid">${c.rooms.map((r,i)=>`<button class="room ${i<Math.floor(S.occ)?'occ':''}" data-room="${i}">${r.e}</button>`).join('')}</div>`+
+R.map(r=>`<div class="card"><div class="em">${r.e}</div><div class="tx"><b>${r.n}</b> <small>×${S.r[r.id]}</small><p>₪${r.r} לכל אורח · ${r.cap} אורחים</p></div><button data-r="${r.id}" ${S.s<(r.s||1)||total()>=CAP[S.s-1]||S.m<rc(r)?'disabled':''}>${S.s<(r.s||1)?'🔒 כוכב '+r.s:total()>=CAP[S.s-1]?'המלון מלא':'בנה ₪'+fmt(rc(r))}</button></div>`).join('')}
+if(tab==3){h=`<h2>מסעדות ואטרקציות</h2>`+F.filter(f=>f.t==3).map(fcard).join('')}
+$('panel').classList.toggle('on',tab>=0);if(tab>=0){const sc=$('pc').scrollTop;$('pc').innerHTML=h;$('pc').scrollTop=sc}}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+if('admin' in d){adm?adminOpen():adminGate();return}
+if('login' in d){if($('pin').value===ADMIN_PIN){adm=true;adminOpen()}else{$('perr').textContent='קוד שגוי'}return}
+if(d.a){adminDo(d.a,b);return}
+if('guest' in d){guestAsk();return}
+if(d.t!==undefined){tab=+d.t;menu=false;draw();return}
+if('menu' in d){menu=!menu;draw();return}
+if('x' in d){tab=-1;draw();return}
+if('bell' in d){const t=Date.now();if(t-lastPull>2000){lastPull=t;arrive(0)}draw();return}
+if(d.f){const f=F.find(x=>x.id==d.f),c=fc(f);if(S.m>=c&&lv(f.id)<MAXL){S.m-=c;S.f[f.id]=lv(f.id)+1;say(f.e+' '+f.n+' שודרג!')}draw();return}
+if(d.r){const r=R.find(x=>x.id==d.r),c=rc(r);if(S.m>=c&&total()<CAP[S.s-1]&&S.s>=(r.s||1)){S.m-=c;S.r[r.id]++;say(r.e+' נפתח '+r.n+' חדש')}draw();return}
+if('star' in d){if(S.s<5&&S.m>=SC[S.s]){S.m-=SC[S.s];S.s++;say('⭐ המלון קיבל כוכב חדש!')}draw();return}
+if(d.room!==undefined){const r=calc().rooms[+d.room],occ=+d.room<Math.floor(S.occ);
+$('sheet').innerHTML=`<div class="big">${r.e}</div><h2>${r.n} ${100+ +d.room+1}</h2><p>${r.d}<br>${occ?'האורח בחוץ — אפשר להציץ ✨':'החדר פנוי ומחכה לאורח.'}</p><button data-tip="${d.room}">🔍 חקור את החדר</button><button data-close style="background:var(--line);color:var(--ink)">יציאה</button>`;$('modal').classList.add('on');return}
+if(d.tip!==undefined){const now=Date.now();if((tipAt[d.tip]||0)>now-8000){b.textContent='כבר חיפשת כאן — נסה שוב בעוד רגע';return}
+tipAt[d.tip]=now;const v=0;const f=['מצאת טיפ מתחת לכרית','מצאת מטבעות בכיס של אלבום','מצאת שוקולד שנשכח'][Math.random()*3|0];
+b.textContent=f+' 🔍';head();return}
+if('close' in d)$('modal').classList.remove('on')});
+$('modal').addEventListener('click',e=>{if(e.target.id=='modal')$('modal').classList.remove('on')});
+const GZ=[[50,92],[24,72],[50,58],[76,72]];let gz=0,gt=0,gto;
+function gcomment(z){const t=lv,n=total();
+if(z==0)return !t('rec')?['התור בקבלה ארוך... צריך עוד עובדים',0]:!t('elev')?['אין מעלית? אני עולה ברגל מה מזוודה 🧳',0]:['קבלה מצוינת! קיבלתי מפתח תוך דקה',1];
+if(z==1)return !t('pool')?['איפה הבריכה?? שיבנו אחת!',0]:!t('slide')?['בריכה יפה, אבל הילדים רוצים מגלשות',0]:!t('bar')?['בר ליד הבריכה היה משלים את היום',0]:!t('guard')?['אין מציל... קצת מלחיץ',0]:['הכי כיף בעולם! מגיע לי עוד קוקטייל 🍹',1];
+if(z==2)return n<5||!S.r.lux?['החדר נחמד, אבל איפה הסוויטות?',0]:S.s<3?['מלון טוב, אני מחכה לעוד כוכבים ⭐',0]:['חדר מושלם, ג׳קוזי במרפסת 😍',1];
+return !t('buf')?['רעב! מתי נפתחת מסעדה?',0]:!t('spa')?['אין ספא... הגב שלי כואב',0]:!t('hall')?['לחתונה של דודה צריך אולם אירועים',0]:['מסעדה, ספא וחנות — חופשה מושלמת!',1]}
+function guestSet(z){const e=$('guest');if(window.R3)G3.z=z;else{e.style.left=GZ[z][0]+'%';e.style.top=GZ[z][1]+'%'}$('bub').textContent='🚶...';clearTimeout(gto);
+gto=setTimeout(()=>{const[t,g]=gcomment(z);$('bub').textContent=t;$('gc').textContent=g?'😄':'🤔';
+if(false){const v=Math.round(20*mult()*S.s);S.m+=v;say('😄 האורח השאיר טיפ ₪'+v);head()}},2600)}
+function guestAsk(){const r=Math.min(5,1+Math.round(F.filter(f=>lv(f.id)).length/F.length*3+(S.s-1)/2)),m=F.find(f=>!lv(f.id));
+$('bub').textContent='הדירוג שלי: '+'★'.repeat(r)+'☆'.repeat(5-r)+(m?' — חסר לי: '+m.n:' — הכל מושלם!')}
+const ADMIN_PIN='4829';let adm=false;
+function adminGate(){$('sheet').innerHTML='<h2>🔒 אדמין</h2><p>הזן קוד כניסה</p><input id="pin" type="password" inputmode="numeric" autocomplete="off" style="width:100%;font:inherit;font-size:22px;text-align:center;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)"><p id="perr" style="color:#c0392b;min-height:20px"></p><button data-login>כניסה</button><button data-close style="background:var(--line);color:var(--ink)">סגור</button>';$('modal').classList.add('on')}
+let rs=false;
+function adminOpen(){rs=false;const b=(a,t,x='')=>`<button data-a="${a}" ${x}>${t}</button>`;
+$('sheet').innerHTML='<h2>⚙️ אדמין</h2>'+b('m1','💰 +₪1,000')+b('m2','💰 +₪100,000')+b('star','⭐ הוסף כוכב')+b('unlock','🏗️ פתח הכל (רמה 3)')+b('rooms','🛏️ מלא את כל החדרים במגדל')+b('full','👥 מלא את המלון באורחים')+b('reset','🗑️ אפס משחק','style="background:#c0392b"')+'<button data-close style="background:var(--line);color:var(--ink)">סגור</button>';
+$('modal').classList.add('on')}
+function adminDo(a,b){if(!adm)return;if(a=='m1')S.m+=1000;
+if(a=='m2')S.m+=1e5;
+if(a=='star'&&S.s<5)S.s++;
+if(a=='unlock')F.forEach(f=>S.f[f.id]=Math.max(lv(f.id),3));
+if(a=='rooms'){let i=0;while(total()<CAP[S.s-1])S.r[R[i++%3].id]++}
+if(a=='full'){while(S.stays.length<total())S.stays.push(15)}
+if(a=='reset'){if(!rs){rs=true;b.textContent='לחץ שוב לאישור';return}
+S={m:100,s:1,f:{},r:{reg:1,fam:0,lux:0,jr:0,pent:0,roy:0},stays:[],occ:0};feed=['המשחק אופס 🌴'];try{localStorage.removeItem('hotel2')}catch(e){}
+$('modal').classList.remove('on')}
+draw();if(b&&a!='reset'){const t=b.textContent;b.textContent='✓ בוצע';setTimeout(()=>b.textContent=t,900)}}
+let lastPull=0;
+function income(c){if(!c.rooms.length)return 0;const r=c.rooms[Math.min(S.stays.length,c.rooms.length-1)];return Math.round((r.r+c.pg)*mult())}
+function checkin(auto){const c=calc();
+if(!lv('rec')){if(!auto)say('אין דלפק קבלה — קנה אחד בלובי 🛎️');return}
+if(S.stays.length>=c.rooms.length){if(!auto)say('אין חדר פנוי — בנה חדר 🛏️');return}
+const r=c.rooms[S.stays.length],p=Math.round((r.r+c.pg)*mult());
+S.m+=p;S.stays.push(8+(Math.random()*6|0));S.occ=S.stays.length;say(r.e+' אורח קיבל חדר ושילם ₪'+p+' 💰')}
+function tick2(){const c=calc();
+S.t=(S.t||0)+1;S.stays=S.stays.map(x=>x-1).filter(x=>x>0);S.occ=S.stays.length;
+if(lv('rec')){S.acc=(S.acc||0)+.12+.04*lv('rec')+.01*c.ap;if(S.acc>=1){S.acc-=1;arrive(1)}if(S.acc>1.5)S.acc=1.5}
+else if(gt%15==1)say('קנה דלפק קבלה בלשונית לובי כדי שאורחים יגיעו 🛎️');
+if(++gt%9==0){gz=(gz+1)%4;guestSet(gz)}draw()}
+function groupSize(){let L=2*(S.s-1);F.forEach(f=>L+=lv(f.id));return 1+Math.floor(L/3)+Math.floor((S.t||0)/120)}
+function checkin(auto,fam){const c=calc();
+if(!lv('rec')){if(!auto)say('אין דלפק קבלה — קנה אחד בלובי 🛎️');return 0}
+if(S.stays.length>=c.rooms.length){if(!auto)say('אין חדר פנוי — בנה חדר 🛏️');return 0}
+const r=c.rooms[S.stays.length],p=Math.round(((fam?250:r.r)+c.pg)*mult());
+S.m+=p;S.stays.push(8+(Math.random()*6|0)+(fam?4:0));S.occ=S.stays.length;return p}
+function arrive(auto){const n=groupSize();let t=0,k=0,f=0;
+if(n>=3&&lv('rec')&&Math.random()<.3){f=checkin(1,1);t+=f;if(f)k++}
+for(let i=f?1:0;i<n;i++){const p=checkin(auto);if(!p)break;t+=p;k++}
+if(k)say(f?'👨‍👩‍👧 משפחה שילמה ₪'+f+(k>1?' ועוד '+(k-1)+' אורחים (סה״כ ₪'+t+')':''):'🛏️ '+k+' '+(k>1?'אורחים שילמו':'אורח שילם')+' ₪'+t+' 💰')}
+function mm(s){s=Math.floor(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+setInterval(tick2,1000);
+setInterval(()=>{try{localStorage.setItem('hotel2',JSON.stringify(S))}catch(e){}},5000);
+const G3={z:0,key:''},ZP=[[0,0,3.8],[-4.8,0,3.4],[2.8,0,2.6],[4.8,0,3.4]],mats={};let scene,cam,dyn=null,gm,bx,DL,HL,LIT,WAT,NC,DC,CL=[];
+const mat=c=>mats[c]||(mats[c]=new THREE.MeshStandardMaterial({color:c,roughness:.85,metalness:.05}));
+function box(g,c,x,y,z,w,h,d,tb){const m=new THREE.Mesh(bx,mat(c));m.scale.set(w,h,d);m.position.set(x,y+h/2,z);m.castShadow=m.receiveShadow=true;if(tb!==undefined)m.userData.tab=tb;g.add(m);return m}
+const P3=[['slide','#ff8a3d',-6.2,-1.6,.7,.3,1.6],['bar','#8a5a2b',-4.4,1.4,1,.5,.8],['guard','#e03131',-6.3,1.8,.35,.7,.35],['vip','#8e44ad',-3.9,-2,.9,.6,.9]];
+const A3=[['buf','#e67e22',4.2,-1.8,1.6,1.2],['spa','#2ecc71',6.3,-1.8,1.4,1],['hall','#9b59b6',4.4,.2,1.8,1.4],['shop','#f1c40f',6.4,.2,1.2,.8],['rs','#e84393',5.3,2,2.2,.8]];
+function rebuild(){if(dyn)scene.remove(dyn);dyn=new THREE.Group();scene.add(dyn);
+const c=calc(),n=c.rooms.length,o=S.stays.length,fl=Math.max(1,Math.ceil(n/5)),H=fl*.75+.3;
+box(dyn,'#dccfa8',-5.2,0,0,3.8,.15,5.2,1);if(lv('pool')){box(dyn,'#f4efe2',-5.2,.15,0,3.5,.04,4.9,1);box(dyn,'#2cc3cd',-5.2,.15,0,3.2,.07,4.6,1).material=WAT}
+P3.forEach(([id,col,x,z,w,hb,d])=>{if(lv(id))box(dyn,col,x,.15,z,w,hb+lv(id)*.12,d,1)});
+if(lv('bar'))box(dyn,'#d63a3a',-4.4,.15+.5+lv('bar')*.12,1.4,1.2,.1,1,1);
+for(let i=0;i<Math.min(5,lv('sun'));i++)box(dyn,'#ffffff',-4.2,.15,-1+i*.55,.9,.2,.4,1);
+box(dyn,'#e8b95a',5.2,0,0,3.8,.15,5.2,3);
+A3.forEach(([id,col,x,z,w,hb])=>{if(lv(id))box(dyn,col,x,.15,z,w,hb+lv(id)*.15,w*.9,3)});
+box(dyn,'#c9d3de',0,0,-2,3.6,H,2.4,2);
+for(let i=0;i<n;i++){const m=box(dyn,'#6f8aa6',-1.44+(i%5)*.72,.2+Math.floor(i/5)*.75,-.78,.5,.45,.05,2);if(i<o)m.material=LIT}
+box(dyn,'#7d8fa3',0,H,-2,3.9,.14,2.7,2);for(let s=0;s<S.s;s++)box(dyn,'#f0c24d',-1+s*.5,H+.14,-2,.3,.3,.3,2);
+box(dyn,'#f2e3c4',0,0,.7,3.6,1,1.6,0);box(dyn,'#5a3a22',0,0,1.51,.8,.7,.05,0);box(dyn,'#c0392b',0,.74,1.6,1.3,.08,.5,0);box(dyn,'#b89968',0,1,.7,3.8,.1,1.8,0);
+if(lv('elev'))box(dyn,'#9aa7b3',1.3,0,1.51,.5,.7,.05,0);
+for(let i=0;i<Math.min(o,7);i++)box(dyn,['#e74c3c','#3498db','#f39c12','#9b59b6'][i%4],-1.5+i*.5,0,2.4,.25,.5,.25,0)}
+function upd3d(){const k=[JSON.stringify(S.f),JSON.stringify(S.r),S.stays.length,S.s].join('|');if(k!==G3.key){G3.key=k;rebuild()}}
+function label(t,x,y,z,tb){const c=document.createElement('canvas');c.width=256;c.height=72;const g=c.getContext('2d');g.fillStyle='#12263ae6';g.fillRect(4,4,248,64);g.fillStyle='#fff';g.font='bold 34px Heebo,sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(t,128,38);
+const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false}));s.scale.set(2.6,.73,1);s.position.set(x,y,z);s.userData.tab=tb;s.renderOrder=5;scene.add(s)}
+const IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+function fail3d(m){window.R3=null;window.__err('3D off, using simple map: '+m);try{$('mapbox').innerHTML='';$('gc').style.display='';$('guest').style.transition='';draw();guestSet(G3.z)}catch(e){}}
+function init3d(){if(!window.THREE){window.__err('Three.js did not load - using simple map');return}try{
+const host=$('mapbox'),w=host.clientWidth||340,h=Math.round(w*1.1),r=(()=>{for(const o of [{antialias:!IOS},{antialias:false}]){try{const x=new THREE.WebGLRenderer(o);if(x.getContext())return x}catch(e){}}throw new Error('WebGL unavailable')})();
+r.setPixelRatio(Math.min(IOS?1.5:2,devicePixelRatio||1));r.setSize(w,h);r.shadowMap.enabled=!IOS;r.shadowMap.type=THREE.PCFSoftShadowMap;r.domElement.style.cssText='display:block;width:100%;border-radius:18px;touch-action:manipulation';host.appendChild(r.domElement);
+scene=new THREE.Scene();NC=new THREE.Color('#14213d');DC=new THREE.Color('#bfe6f0');scene.background=DC.clone();scene.fog=new THREE.Fog('#bfe6f0',30,80);
+LIT=new THREE.MeshStandardMaterial({color:'#ffd75e',emissive:'#ffb830',emissiveIntensity:.5});WAT=new THREE.MeshStandardMaterial({color:'#2cc3cd',emissive:'#2cc3cd',emissiveIntensity:.15,roughness:.15,metalness:.15});
+cam=new THREE.PerspectiveCamera(60,w/h,.1,100);cam.position.set(0,10,17);cam.lookAt(0,1.5,-1);
+HL=new THREE.HemisphereLight('#e4f4ff','#7fb36c',.65);scene.add(HL);const dl=DL=new THREE.DirectionalLight(0xfff3dc,.75);dl.position.set(6,12,8);dl.castShadow=true;dl.shadow.mapSize.set(1024,1024);const sc=dl.shadow.camera;sc.left=-16;sc.right=16;sc.top=16;sc.bottom=-16;sc.near=1;sc.far=45;sc.updateProjectionMatrix();scene.add(dl);
+bx=new THREE.BoxGeometry(1,1,1);box(scene,'#8cc47a',0,-.2,-10,90,.2,70);box(scene,'#d9ccb0',0,0,2.2,2.4,.04,5);box(scene,'#cfd6dc',0,0,6.2,40,.03,3);
+function tree(x,z,k){const t=new THREE.Mesh(new THREE.CylinderGeometry(.08*k,.12*k,.8*k,6),mat('#7a5232'));t.position.set(x,.4*k,z);t.castShadow=true;scene.add(t);
+[['#3f9e4f',1.1,.95],['#58b85f',.8,1.45]].forEach(([c,q,y])=>{const f=new THREE.Mesh(new THREE.SphereGeometry(.5*q*k,10,8),mat(c));f.position.set(x,y*k,z);f.castShadow=true;scene.add(f)})}
+[[-9,-4,1.3],[-9,1,1.1],[9,-3,1.2],[9,3.5,1.4],[-7.6,-5.4,1],[7.6,-5.4,1.2],[-2.6,4.4,.9],[2.6,4.4,.9],[-3.2,-5.6,1.1],[0,-6.4,1.4],[3.2,-5.6,1.1],[-9.6,5,1.2],[9.6,6,1]].forEach(a=>tree(...a));
+for(let i=0;i<6;i++){const c=new THREE.Group(),m=new THREE.MeshStandardMaterial({color:'#ffffff',roughness:1});[[0,0,1.6],[1.3,-.2,1.2],[-1.3,-.2,1.1]].forEach(([x,y,q])=>{const b=new THREE.Mesh(new THREE.SphereGeometry(q,10,8),m);b.position.set(x,y,0);b.scale.y=.55;c.add(b)});c.position.set(-22+i*9,8+i%3*1.2,-26-i%2*6);scene.add(c);CL.push(c)}
+label('בריכות',-5.2,2.3,0,1);label('אטרקציות',5.2,2.3,0,3);label('לובי',0,1.8,2,0);
+gm=new THREE.Group();const bd=new THREE.Mesh(new THREE.CylinderGeometry(.22,.26,.7,12),mat('#16a1ab')),hd=new THREE.Mesh(new THREE.SphereGeometry(.2,12,10),mat('#f2c9a0'));bd.position.y=.35;hd.position.y=.9;gm.add(bd,hd);gm.traverse(o=>o.castShadow=true);gm.position.set(0,0,3.8);scene.add(gm);
+const rcs=new THREE.Raycaster();
+r.domElement.addEventListener('click',e=>{const b=r.domElement.getBoundingClientRect();rcs.setFromCamera(new THREE.Vector2((e.clientX-b.left)/b.width*2-1,-(e.clientY-b.top)/b.height*2+1),cam);
+const x=rcs.intersectObjects(scene.children,true).find(i=>i.object.userData.tab!==undefined);if(x){tab=x.object.userData.tab;menu=false;draw()}});
+addEventListener('resize',()=>{const w2=host.clientWidth;r.setSize(w2,Math.round(w2*1.1));cam.aspect=w2/Math.round(w2*1.1);cam.updateProjectionMatrix()});
+$('gc').style.display='none';$('guest').style.transition='none';
+let last=0;const loop=t=>{if(!window.R3)return;requestAnimationFrame(loop);try{loopBody(t)}catch(e){fail3d(e.message)}};
+const loopBody=t=>{const dt=Math.min(.05,(t-last)/1000);last=t;
+const T=ZP[G3.z],p=gm.position,dx=T[0]-p.x,dz=T[2]-p.z,d=Math.hypot(dx,dz);
+if(d>.05){const s=Math.min(d,3*dt);p.x+=dx/d*s;p.z+=dz/d*s;p.y=Math.abs(Math.sin(t/90))*.12;gm.rotation.y=Math.atan2(dx,dz)}else p.y=0;
+cam.position.x=Math.sin(t/4000)*1.2;cam.lookAt(0,1.5,-1);
+const dy=.5+.5*Math.cos(((S.t||0)%240)/240*6.2832);scene.background.lerpColors(NC,DC,dy);scene.fog.color.copy(scene.background);DL.intensity=.25+.5*dy;HL.intensity=.3+.35*dy;LIT.emissiveIntensity=.25+1.1*(1-dy);WAT.emissiveIntensity=.12+.1*Math.sin(t/350);
+CL.forEach(c=>{c.position.x+=dt*.5;if(c.position.x>24)c.position.x=-24});
+r.render(scene,cam);
+const v=new THREE.Vector3(p.x,1.3,p.z).project(cam),cw=r.domElement.clientWidth,e=$('guest');
+e.style.left=Math.max(70,Math.min(cw-70,(v.x+1)/2*cw))+'px';e.style.top=(1-v.y)/2*r.domElement.clientHeight+'px'};
+requestAnimationFrame(loop);window.R3=r;r.domElement.addEventListener('webglcontextlost',ev=>{ev.preventDefault();fail3d('WebGL context lost')})}catch(err){fail3d(err.message||err)}}
+init3d();draw();guestSet(0);window.__ok=1;
+</script>
+</body>
+</html>
